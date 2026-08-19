@@ -15,7 +15,7 @@ export default function AppSidebarHeader() {
             <BookMarked className="!size-5" />
           </div>
           <div className="grid flex-1 text-left text-base leading-tight group-data-[state=collapsed]:hidden">
-            <span className="truncate font-medium">RiftTheory</span>
+            <span className="truncate font-medium">RiftStaples</span>
           </div>
         </SidebarMenuButton>
       </SidebarMenu>
