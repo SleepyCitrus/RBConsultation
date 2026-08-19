@@ -5,7 +5,7 @@
   "printWidth": 100,
   "tabWidth": 2,
   "plugins": ["prettier-plugin-organize-imports", "prettier-plugin-tailwindcss"],
-  "tailwindStylesheet": "./src/app/globals.css",
+  "tailwindStylesheet": "./apps/frontend/src/app/globals.css",
   "comments": {
     "prettier-plugin-tailwindcss": "MUST COME LAST in plugins array"
   }

@@ -1,18 +1,23 @@
 import { SidebarProvider } from "@/src/components/ui/sidebar";
 import { cn } from "@/src/lib/utils";
 import type { Metadata } from "next";
-import { Fira_Code, Inter } from "next/font/google";
+import { Fira_Code, Geist } from "next/font/google";
 import { ThemeProvider } from "../components/theme/theme-provider";
 import "./globals.css";
 import AppSidebar from "./navigation/app-sidebar";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-});
+// const inter = Inter({
+//   variable: "--font-inter",
+//   subsets: ["latin"],
+// });
 
 const firaCode = Fira_Code({
   variable: "--font-fira-code",
+  subsets: ["latin"],
+});
+
+const geist = Geist({
+  variable: "--font-geist",
   subsets: ["latin"],
 });
 
@@ -29,7 +34,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={cn("h-full", "antialiased", inter.variable, firaCode.variable)}
+      className={cn("h-full", "antialiased", geist.variable, firaCode.variable)}
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col">
