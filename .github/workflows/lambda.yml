@@ -50,6 +50,6 @@ jobs:
       uses: aws-actions/aws-lambda-deploy@v1.1.0
       with:
         function-name: just-tcg-pricing
-        code-artifacts-dir: artifact
+        code-artifacts-dir: apps/backend/artifact
         handler: index.handler
         runtime: python3.14
