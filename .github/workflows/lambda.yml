@@ -43,13 +43,10 @@ jobs:
         # Copy and build lambda zip
         cp -R ./app/lambda/. ./artifact/ 
 
-        echo "Artifact contents:"
-        find ./artifact -maxdepth 2 -type f | sort
-
     - name: Deploy Lambda Function
       uses: aws-actions/aws-lambda-deploy@v1.1.0
       with:
         function-name: just-tcg-pricing
         code-artifacts-dir: apps/backend/artifact
-        handler: index.handler
+        handler: lambda_function.lambda_handler
         runtime: python3.14
