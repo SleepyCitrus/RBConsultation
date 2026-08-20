@@ -24,6 +24,31 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v5
 
+    - name: Debug GitHub OIDC claims
+      uses: actions/github-script@v8
+      with:
+        script: |
+          const token = await github.rest.actions.getIDToken({
+            audience: 'sts.amazonaws.com'
+          })
+
+          const payload = JSON.parse(
+            Buffer.from(token.data.split('.')[1], 'base64url').toString()
+          )
+
+          console.log(JSON.stringify({
+            iss: payload.iss,
+            aud: payload.aud,
+            sub: payload.sub,
+            repository: payload.repository,
+            repository_id: payload.repository_id,
+            repository_owner: payload.repository_owner,
+            repository_owner_id: payload.repository_owner_id,
+            ref: payload.ref,
+            environment: payload.environment,
+            workflow: payload.workflow
+          }, null, 2))
+
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v4
       with:
