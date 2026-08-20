@@ -28,7 +28,7 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v4
       with:
         role-to-assume: arn:aws:iam::258491186884:role/github-actions-deploy-role
-        aws-region: us-east-1
+        aws-region: us-west-1
         # The role-to-assume should be the ARN of the IAM role you created for GitHub Actions OIDC
 
     - name: Create Python zip
