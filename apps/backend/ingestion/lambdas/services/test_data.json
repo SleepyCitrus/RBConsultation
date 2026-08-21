@@ -1,0 +1,96 @@
+{
+  "id": "riftbound-league-of-legends-trading-card-game-origins-seal-of-rage-epic",
+  "uuid": "d22a5a79-0785-50ad-b97f-cfbfad947a40",
+  "name": "Seal of Rage",
+  "game": "Riftbound: League of Legends Trading Card Game",
+  "set": "origins-riftbound-league-of-legends-trading-card-game",
+  "set_name": "Origins",
+  "number": "040/298",
+  "rarity": "Epic",
+  "tcgplayerId": "652814",
+  "mtgjsonId": null,
+  "scryfallId": null,
+  "details": null,
+  "variants": [
+    {
+      "id": "riftbound-league-of-legends-trading-card-game-origins-seal-of-rage-epic_near-mint_foil",
+      "uuid": "c19c737a-2b9b-5b31-8882-cc430c3d63d4",
+      "condition": "Near Mint",
+      "printing": "Foil",
+      "language": "English",
+      "tcgplayerSkuId": "8925737",
+      "price": 17.01,
+      "lastUpdated": 1787198516,
+      "priceChange24hr": -1.96,
+      "priceHistory": [
+        {
+          "p": 15.99,
+          "t": 1761782400
+        },
+        {
+          "p": 9.5,
+          "t": 1761868800
+        },
+        {
+          "p": 6.8,
+          "t": 1761955200
+        },
+        {
+          "p": 21.69,
+          "t": 1762128000
+        },
+        {
+          "p": 20.64,
+          "t": 1762214400
+        },
+        {
+          "p": 22.83,
+          "t": 1762300800
+        },
+        {
+          "p": 19.23,
+          "t": 1762387200
+        },
+        {
+          "p": 21.64,
+          "t": 1762473600
+        }
+      ],
+      "priceChange7d": -7.4,
+      "avgPrice": 17.28,
+      "minPrice7d": 16.6,
+      "maxPrice7d": 18.38,
+      "stddevPopPrice7d": 0.58,
+      "covPrice7d": 0.033297637826144574,
+      "iqrPrice7d": 0.66,
+      "trendSlope7d": -0.17949878335173503,
+      "priceChangesCount7d": 24,
+      "priceChange30d": -25.43,
+      "avgPrice30d": 18.14,
+      "minPrice30d": 15.33,
+      "maxPrice30d": 22.81,
+      "stddevPopPrice30d": 1.21,
+      "covPrice30d": 0.06645448296959833,
+      "iqrPrice30d": 1.7,
+      "trendSlope30d": -0.060568286039845,
+      "priceChangesCount30d": 105,
+      "priceRelativeTo30dRange": 0.22459893048128343,
+      "priceChange90d": 34.47,
+      "avgPrice90d": 16.63,
+      "minPrice90d": 10.41,
+      "maxPrice90d": 31.01,
+      "stddevPopPrice90d": 5.59,
+      "covPrice90d": 0.33621681141856574,
+      "iqrPrice90d": 6.62,
+      "trendSlope90d": 0.115263377377089,
+      "priceChangesCount90d": 301,
+      "priceRelativeTo90dRange": 0.32038834951456313,
+      "minPrice1y": 6.8,
+      "maxPrice1y": 38.65,
+      "minPriceAllTime": 6.8,
+      "minPriceAllTimeDate": "2025-11-01T12:24:05.833Z",
+      "maxPriceAllTime": 38.65,
+      "maxPriceAllTimeDate": "2025-11-27T23:18:04.977Z"
+    }
+  ]
+}
