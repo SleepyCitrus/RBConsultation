@@ -1,5 +1,3 @@
-import json
-
 import boto3
 
 from justtcg.justtcg_card import JustTCGCard
@@ -17,21 +15,8 @@ class DDBService:
     def write_cards_metadata(self, cards: list[JustTCGCard]):
         table = self.ddb.Table(CARD_METADATA_TABLE)
         for card in cards:
-            item = json.loads(
-                card.model_dump_json(
-                    include={
-                        "uuid",
-                        "id",
-                        "name",
-                        "game",
-                        "set",
-                        "set_name",
-                        "number",
-                        "rarity",
-                        "tcgplayerId",
-                        "details",
-                    }
-                )
+            item = card.model_dump(
+                include={"uuid", "id", "name", "game", "set", "set_name", "number", "rarity", "tcgplayerId", "details"}
             )
             table.put_item(Item=item)
 
@@ -45,10 +30,11 @@ class DDBService:
                 variant = card.variants[0]
 
                 for price_history in variant.priceHistory:
-                    item = json.loads(price_history.model_dump_json(include={"p", "t"}))
+                    item = price_history.model_dump(include={"p", "t"})
                     item["name"] = card.name
                     rows_to_write.append(item)
 
+        print(rows_to_write)
         try:
             with table.batch_writer() as batch:
                 for row in rows_to_write:

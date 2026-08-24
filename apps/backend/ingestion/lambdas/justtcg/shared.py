@@ -11,6 +11,4 @@ def auto_round_to_two_decimals(v: Decimal) -> Decimal:
 
 
 EpochDatetime = Annotated[datetime, PlainSerializer(lambda dt: int(dt.timestamp()), return_type=int)]
-CurrencyDecimal = Annotated[
-    Decimal, AfterValidator(auto_round_to_two_decimals), PlainSerializer(lambda d: f"{d:.2f}", return_type=str)
-]
+CurrencyDecimal = Annotated[Decimal, AfterValidator(auto_round_to_two_decimals)]
