@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from pydantic import BaseModel
 
-from justtcg_variant import JustTCGVariant
+from justtcg.justtcg_variant import JustTCGVariant
 
 
 @dataclass

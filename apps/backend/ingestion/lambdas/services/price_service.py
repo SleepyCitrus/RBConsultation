@@ -2,7 +2,7 @@ import os
 
 import requests
 
-from justtcg_card import JustTCGCard
+from justtcg.justtcg_card import JustTCGCard
 from services.riftbound_service import RIFTBOUND, RiftboundService
 
 GAMES_URL = "https://api.justtcg.com/v1/games"

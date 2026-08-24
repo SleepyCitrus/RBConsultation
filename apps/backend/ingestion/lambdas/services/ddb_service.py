@@ -2,7 +2,7 @@ import json
 
 import boto3
 
-from justtcg_card import JustTCGCard
+from justtcg.justtcg_card import JustTCGCard
 
 dynamodb = boto3.resource("dynamodb")
 
