@@ -41,7 +41,7 @@ jobs:
         pip install -r requirements.txt -t ./artifact
 
         # Copy and build lambda zip
-        cp -R ./app/lambda/. ./artifact/
+        cp -R ./ingestion/lambdas/. ./artifact/
 
     - name: Deploy Lambda Function
       uses: aws-actions/aws-lambda-deploy@v1.1.0
