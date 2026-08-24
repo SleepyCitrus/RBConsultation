@@ -2,7 +2,7 @@ import json
 
 import boto3
 
-from apps.backend.ingestion.lambdas.justtcg_card import JustTCGCard
+from justtcg_card import JustTCGCard
 
 dynamodb = boto3.resource("dynamodb")
 

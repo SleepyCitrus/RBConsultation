@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from pydantic import BaseModel
 
-from apps.backend.ingestion.lambdas.justtcg_price_history import JustTCGPriceHistory
+from justtcg_price_history import JustTCGPriceHistory
 
 
 @dataclass

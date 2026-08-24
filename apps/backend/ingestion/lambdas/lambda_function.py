@@ -1,8 +1,8 @@
 import json
 
-from apps.backend.ingestion.lambdas.services.ddb_service import DDBService
-from apps.backend.ingestion.lambdas.services.price_service import PriceService
-from apps.backend.ingestion.lambdas.services.riftbound_service import RiftboundService
+from services.ddb_service import DDBService
+from services.price_service import PriceService
+from services.riftbound_service import RiftboundService
 
 rbService = RiftboundService()
 priceService = PriceService(rbService)

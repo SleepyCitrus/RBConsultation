@@ -2,8 +2,8 @@ import os
 
 import requests
 
-from apps.backend.ingestion.lambdas.justtcg_card import JustTCGCard
-from apps.backend.ingestion.lambdas.services.riftbound_service import RIFTBOUND, RiftboundService
+from justtcg_card import JustTCGCard
+from services.riftbound_service import RIFTBOUND, RiftboundService
 
 GAMES_URL = "https://api.justtcg.com/v1/games"
 CARDS_URL = "https://api.justtcg.com/v1/cards"
