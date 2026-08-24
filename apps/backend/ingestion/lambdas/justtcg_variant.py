@@ -1,6 +1,9 @@
 from dataclasses import dataclass
 
-from pydantic import BaseModel
+from datetime import datetime
+from decimal import Decimal
+
+from pydantic import BaseModel, Field
 
 from justtcg_price_history import JustTCGPriceHistory
 
@@ -13,9 +16,9 @@ class JustTCGVariant(BaseModel):
     printing: str
     language: str
     tcgplayerSkuId: str
-    price: float
-    lastUpdated: float
-    priceChange24hr: float | None
+    price: Decimal = Field(decimal_places=2)
+    lastUpdated: datetime
+    priceChange24hr: Decimal | None = Field(decimal_places=2)
     priceHistory: list[JustTCGPriceHistory]
 
     # Unused
