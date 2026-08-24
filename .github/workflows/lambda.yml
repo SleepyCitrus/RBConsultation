@@ -35,13 +35,26 @@ jobs:
       run: |
         # Create a clean build directory
         rm -rf artifact
-        mkdir artifact
+        mkdir -p artifact
+
+        cp -R ./ingestion/lambdas/. ./artifact/
         
         # Install requirements directly into the artifact directory
-        pip install -r requirements.txt -t ./artifact
+        docker run --rm \
+          --platform linux/amd64 \
+          -v "$PWD/apps/backend/ingestion/lambdas:/src:ro" \
+          -v "$PWD/artifact:/var/task" \
+          -w /src \
+          public.ecr.aws/lambda/python:3.14 \
+          bash -c '
+            pip install --no-cache-dir poetry &&
+            poetry self add poetry-plugin-export &&
+            poetry export --format requirements.txt --without-hashes |
+              pip install --no-cache-dir -r /dev/stdin -t /var/task
+          '
 
-        # Copy and build lambda zip
-        cp -R ./ingestion/lambdas/. ./artifact/
+        rm -rf artifact/__pycache__
+        find artifact -name ".DS_Store" -delete
 
     - name: Deploy Lambda Function
       uses: aws-actions/aws-lambda-deploy@v1.1.0
@@ -51,4 +64,4 @@ jobs:
         handler: lambda_function.lambda_handler
         runtime: python3.14
         environment: '{"JUSTTCG_API_KEY": "${{ secrets.JUSTTCG_API_KEY }}"}'
-        timeout: 60
+        timeout: 120
