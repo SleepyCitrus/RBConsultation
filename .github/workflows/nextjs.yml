@@ -43,9 +43,36 @@ jobs:
         working-directory: apps/frontend
         run: npm ci
 
+      - name: Check Next.js config
+        working-directory: apps/frontend
+        run: |
+          echo "PWD:"
+          pwd
+
+          echo "FILES:"
+          ls -la
+
+          echo "NEXT CONFIG:"
+          cat next.config.ts
+
       - name: Build Next.js
         working-directory: apps/frontend
         run: npm run build
+
+      - name: Verify static export
+        working-directory: apps/frontend
+        run: |
+          echo "Generated files:"
+          find out -maxdepth 2 -type f | head -50
+
+          echo "Checking for basePath:"
+          grep -R 'rift-staples' out | head -30 || true
+
+          echo "Checking for BAD root asset URLs:"
+          grep -R 'href="/_next' out | head -30 || true
+
+          echo "Checking for BAD root routes:"
+          grep -R 'href="/cards' out | head -30 || true
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
@@ -65,5 +92,5 @@ jobs:
 
     steps:
       - name: Deploy to GitHub Pages
-        id: deployment 
+        id: deployment
         uses: actions/deploy-pages@v4
