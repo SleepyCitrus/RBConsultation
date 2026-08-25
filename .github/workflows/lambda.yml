@@ -67,7 +67,7 @@ jobs:
         handler: lambda_function.lambda_handler
         runtime: python3.14
         environment: '{"JUSTTCG_API_KEY": "${{ secrets.JUSTTCG_API_KEY }}"}'
-        timeout: 900
+        timeout: 300
 
     - name: Verify Lambda artifact
       run: |

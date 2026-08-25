@@ -44,7 +44,7 @@ class PriceService:
         if response.json():
             print(response.json())
 
-    def get_cards(self) -> list[JustTCGCard]:
+    def get_cards(self, duration: str = "7d") -> list[JustTCGCard]:
         all_staples = self.rbService.get_staple_cards_dict()
         json_list = []
         for slug, staple in all_staples.items():
@@ -53,7 +53,7 @@ class PriceService:
                 "tcgplayerId": staple.tcgplayer_id,
                 "condition": "NM",
                 "printing": staple.printing,
-                "priceHistoryDuration": "1y",
+                "priceHistoryDuration": duration,
             }
             json_list.append(temp)
 
@@ -72,9 +72,6 @@ class PriceService:
                 if response.json()["data"]:
                     for card in response.json()["data"]:
                         justtcg_card = JustTCGCard.model_validate(card)
-                        # item = justtcg_card.model_dump_json(
-                        #     include={"uuid", "id", "name", "game", "set", "set_name", "number", "rarity", "tcgplayerId"}
-                        # )
                         result.append(justtcg_card)
 
         return result
