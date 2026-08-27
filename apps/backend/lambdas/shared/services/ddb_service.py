@@ -1,6 +1,6 @@
 import boto3
 
-from justtcg.justtcg_card import JustTCGCard
+from apps.backend.lambdas.ingestion.justtcg.justtcg_card import JustTCGCard
 
 dynamodb = boto3.resource("dynamodb")
 

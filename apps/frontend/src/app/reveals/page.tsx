@@ -2,11 +2,11 @@ import PageLayout from "@/src/components/layout/page-layout";
 import { Card, loadCards } from "@/src/lib/card-loader";
 import Image from "next/image";
 
-export default async function Cards() {
+export default async function RevealsPage() {
   const cards = await loadCards("ven", 1);
 
   return (
-    <PageLayout title="Cards">
+    <PageLayout title="Reveals">
       <div className="justify-left flex flex-wrap gap-4 p-4">
         {cards.map((card: Card) => (
           <div className="flex basis-45 items-center justify-center overflow-hidden" key={card.id}>

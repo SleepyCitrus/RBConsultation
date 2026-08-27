@@ -22,7 +22,7 @@ class PriceService:
             if game["id"].contains("riftbound"):
                 print(game["id"], game["name"])
 
-    def get_card(self):
+    def get_card(self, duration: str = "7d"):
         """
         Test function to get a single card.
         If getting multiple cards, use get_cards() instead.
@@ -37,7 +37,7 @@ class PriceService:
                 "tcgplayerId": "652814",
                 "condition": "NM",
                 "printing": "Normal",
-                "priceHistoryDuration": "1y",
+                "priceHistoryDuration": duration,
             },
         )
         response.raise_for_status()

@@ -1,8 +1,8 @@
 import json
 
-from services.ddb_service import DDBService
-from services.price_service import PriceService
-from services.riftbound_service import RiftboundService
+from shared.services.ddb_service import DDBService
+from shared.services.price_service import PriceService
+from shared.services.riftbound_service import RiftboundService
 
 rbService = RiftboundService()
 priceService = PriceService(rbService)

@@ -1,8 +1,7 @@
 from dataclasses import dataclass
 
+from ingestion.justtcg.justtcg_variant import JustTCGVariant
 from pydantic import BaseModel
-
-from justtcg.justtcg_variant import JustTCGVariant
 
 
 @dataclass

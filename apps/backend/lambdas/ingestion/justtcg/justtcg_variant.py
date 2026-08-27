@@ -1,10 +1,9 @@
 from dataclasses import dataclass
 
 
+from ingestion.justtcg.justtcg_price_history import JustTCGPriceHistory
+from ingestion.justtcg.justtcg_shared import CurrencyDecimal, EpochDatetime
 from pydantic import BaseModel
-
-from justtcg.justtcg_price_history import JustTCGPriceHistory
-from justtcg.shared import CurrencyDecimal, EpochDatetime
 
 
 @dataclass

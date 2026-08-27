@@ -5,25 +5,30 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/src/components/ui/sidebar";
-import { IconCards, IconCopy, IconSparkles2 } from "@tabler/icons-react";
+import { IconPin, IconSparkles2 } from "@tabler/icons-react";
 import Link from "next/link";
 
 const databaseNav = [
   {
     title: "New Reveals",
-    url: "/cards",
+    url: "/reveals",
     icon: IconSparkles2,
   },
   {
-    title: "Cards",
-    url: "/cards",
-    icon: IconCards,
+    title: "Staples",
+    url: "/staples",
+    icon: IconPin,
   },
-  {
-    title: "Decks",
-    url: "/decks",
-    icon: IconCopy,
-  },
+  // {
+  //   title: "Cards",
+  //   url: "/cards",
+  //   icon: IconCards,
+  // },
+  // {
+  //   title: "Decks",
+  //   url: "/decks",
+  //   icon: IconCopy,
+  // },
 ];
 
 export default function AppNavDatabase() {
