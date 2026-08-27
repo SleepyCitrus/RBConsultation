@@ -10,7 +10,7 @@ ddbService = DDBService()
 
 
 def lambda_handler(event, context):
-    cards = priceService.get_cards()
+    cards = priceService.get_cards(duration="7d")
     ddbService.write_cards_price(cards)
 
     return {"statusCode": 200, "body": json.dumps("Successful execution!")}
