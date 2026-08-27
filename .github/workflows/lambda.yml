@@ -23,7 +23,7 @@ jobs:
     # Sets the default directory for all 'run' steps in this job
     defaults:
       run:
-        working-directory: apps/backend/lambdas/
+        working-directory: apps/backend
 
     steps:
     - name: Checkout
@@ -38,19 +38,20 @@ jobs:
 
     - name: Create Python zip
       run: |
-        # Create a clean build directory
-        rm -rf artifact/${{ matrix.service }}
-        mkdir -p artifact/${{ matrix.service }}
+        rm -rf lambdas/artifact/${{ matrix.service }}
+        mkdir -p lambdas/artifact/${{ matrix.service }}
 
-        cp -R ./${{ matrix.service }}/. artifact/${{ matrix.service }}/
-        cp -R ./shared/. artifact/${{ matrix.service }}/shared/
-        
-        # Install requirements directly into the artifact directory
+        cp -R lambdas/${{ matrix.service }} \
+          lambdas/artifact/${{ matrix.service }}/
+
+        cp -R lambdas/shared \
+          lambdas/artifact/${{ matrix.service }}/
+
         docker run --rm \
           --platform linux/amd64 \
           --entrypoint /bin/bash \
           -v "$PWD:/src:ro" \
-          -v "$PWD/artifact:/var/task" \
+          -v "$PWD/lambdas/artifact/${{ matrix.service }}:/var/task" \
           -w /src \
           public.ecr.aws/lambda/python:3.14 \
           -c '
@@ -62,20 +63,20 @@ jobs:
               pip install --no-cache-dir -r /dev/stdin -t /var/task
           '
 
-        rm -rf artifact/${{ matrix.service }}/__pycache__
-        find artifact/${{ matrix.service }} -name ".DS_Store" -delete
+        find lambdas/artifact/${{ matrix.service }} -type d -name "__pycache__" -prune -exec rm -rf {} +
+        find lambdas/artifact/${{ matrix.service }} -name ".DS_Store" -delete
 
     - name: Deploy Lambda Function
       uses: aws-actions/aws-lambda-deploy@v1.1.0
       with:
         function-name: just-tcg-pricing
         code-artifacts-dir: apps/backend/lambdas/artifact/${{ matrix.service }}/
-        handler: lambda_function.lambda_handler
+        handler: ${{ matrix.service }}.lambda_function.lambda_handler
         runtime: python3.14
         environment: '{"JUSTTCG_API_KEY": "${{ secrets.JUSTTCG_API_KEY }}"}'
         timeout: 300
 
     - name: Verify Lambda artifact
       run: |
-        test -d artifact/${{ matrix.service }}
-        find artifact/${{ matrix.service }} -maxdepth 2 -type f | sort | head -10
+        test -d lambdas/artifact/${{ matrix.service }}
+        find lambdas/artifact/${{ matrix.service }} -maxdepth 2 -type f | sort | head -10

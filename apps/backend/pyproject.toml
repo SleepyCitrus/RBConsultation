@@ -14,9 +14,9 @@ dependencies = [
 
 [tool.poetry]
 packages = [
-    { include = "ingestion", from="./lambdas" },
-    { include = "shared", from="./lambdas" },
-    { include = "core", from="./lambdas" }
+    { include = "ingestion", from = "lambdas" },
+    { include = "core", from = "lambdas" },
+    { include = "shared", from = "lambdas" },
 ]
 
 [dependency-groups]
