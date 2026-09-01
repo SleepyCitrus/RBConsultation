@@ -38,8 +38,8 @@ jobs:
 
     - name: Create Python zip
       run: |
-        rm -rf lambdas/artifact/${{ matrix.service }}
-        mkdir -p lambdas/artifact/${{ matrix.service }}
+        sudo rm -rf lambdas/artifact/${{ matrix.service }}
+        sudo mkdir -p lambdas/artifact/${{ matrix.service }}
 
         cp -R lambdas/${{ matrix.service }} \
           lambdas/artifact/${{ matrix.service }}/
@@ -67,6 +67,12 @@ jobs:
         sudo rm -rf lambdas/artifact/${{ matrix.service }}
         sudo rm -rf lambdas/artifact/${{ matrix.service }}/.DS_Store
 
+    - name: Verify Lambda artifact
+      run: |
+        echo "=== Artifact ==="
+        sudo test -d lambdas/artifact/${{ matrix.service }}
+        sudo ls -la lambdas/artifact/${{ matrix.service }}
+
     - name: Deploy Lambda Function
       uses: aws-actions/aws-lambda-deploy@v1.1.0
       with:
@@ -76,8 +82,3 @@ jobs:
         runtime: python3.14
         environment: '{"JUSTTCG_API_KEY": "${{ secrets.JUSTTCG_API_KEY }}"}'
         timeout: 300
-
-    - name: Verify Lambda artifact
-      run: |
-        test -d lambdas/artifact/${{ matrix.service }}
-        find lambdas/artifact/${{ matrix.service }} -maxdepth 2 -type f | sort | head -10
