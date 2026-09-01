@@ -49,6 +49,7 @@ jobs:
 
         docker run --rm \
           --platform linux/amd64 \
+          --user "$(id -u):$(id -g)" \
           --entrypoint /bin/bash \
           -v "$PWD:/src:ro" \
           -v "$PWD/lambdas/artifact/${{ matrix.service }}:/var/task" \
@@ -63,8 +64,8 @@ jobs:
               pip install --no-cache-dir -r /dev/stdin -t /var/task
           '
 
-        find lambdas/artifact/${{ matrix.service }} -type d -name "__pycache__" -prune -exec rm -rf {} +
-        find lambdas/artifact/${{ matrix.service }} -name ".DS_Store" -delete
+        sudo rm -rf lambdas/artifact/${{ matrix.service }}
+        sudo rm -rf lambdas/artifact/${{ matrix.service }}/.DS_Store
 
     - name: Deploy Lambda Function
       uses: aws-actions/aws-lambda-deploy@v1.1.0
