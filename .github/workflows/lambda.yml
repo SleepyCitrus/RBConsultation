@@ -41,13 +41,13 @@ jobs:
         sudo rm -rf lambdas/artifact/${{ matrix.service }}
         sudo mkdir -p lambdas/artifact/${{ matrix.service }}
 
-        cp -R lambdas/${{ matrix.service }} \
+        sudo cp -R lambdas/${{ matrix.service }} \
           lambdas/artifact/${{ matrix.service }}/
 
-        cp -R lambdas/shared \
+        sudo cp -R lambdas/shared \
           lambdas/artifact/${{ matrix.service }}/
 
-        docker run --rm \
+        sudo docker run --rm \
           --platform linux/amd64 \
           --user "$(id -u):$(id -g)" \
           --entrypoint /bin/bash \
