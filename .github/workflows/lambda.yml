@@ -49,7 +49,6 @@ jobs:
 
         sudo docker run --rm \
           --platform linux/amd64 \
-          --user "$(id -u):$(id -g)" \
           --entrypoint /bin/bash \
           -v "$PWD:/src:ro" \
           -v "$PWD/lambdas/artifact/${{ matrix.service }}:/var/task" \
