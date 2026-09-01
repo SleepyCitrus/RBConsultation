@@ -64,8 +64,8 @@ jobs:
               pip install --no-cache-dir -r /dev/stdin -t /var/task
           '
 
-        sudo rm -rf lambdas/artifact/${{ matrix.service }}
-        sudo rm -rf lambdas/artifact/${{ matrix.service }}/.DS_Store
+        sudo find lambdas/artifact/${{ matrix.service }} -name "__pycache__" -type d -exec rm -rf {} +
+        sudo find lambdas/artifact/${{ matrix.service }} -name ".DS_Store" -type f -exec rm -f {} +
 
     - name: Verify Lambda artifact
       run: |
