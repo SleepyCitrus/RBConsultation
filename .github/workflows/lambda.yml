@@ -63,15 +63,6 @@ jobs:
             poetry export --format requirements.txt --without-hashes |
               pip install --no-cache-dir -r /dev/stdin -t /var/task
 
-            echo "=== Requirements ==="
-            cat /tmp/requirements.txt
-
-            echo "=== Installing ==="
-            pip install \
-              --no-cache-dir \
-              -r /tmp/requirements.txt \
-              -t /var/task
-
             echo "=== Installed ==="
             pwd
             ls -la /var/task
