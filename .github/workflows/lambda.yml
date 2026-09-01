@@ -60,10 +60,8 @@ jobs:
               poetry==2.4.1 \
               poetry-plugin-export==1.10.0
 
-            poetry export \
-              --format requirements.txt \
-              --without-hashes \
-              -o /tmp/requirements.txt
+            poetry export --format requirements.txt --without-hashes |
+              pip install --no-cache-dir -r /dev/stdin -t /var/task
 
             echo "=== Requirements ==="
             cat /tmp/requirements.txt
