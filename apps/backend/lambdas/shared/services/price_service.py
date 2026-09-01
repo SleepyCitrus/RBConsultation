@@ -1,25 +1,41 @@
+import logging
 import os
 
-from ingestion.justtcg.justtcg_card import JustTCGCard
 import requests
-from shared.services.riftbound_service import RIFTBOUND, RiftboundService
+from ingestion.justtcg.justtcg_card import JustTCGCard
+from shared.logging.logger import logger
+from shared.riftcodex.riftcodex_item import RiftcodexItem
+from shared.services.riftbound_service import (
+    COMMON,
+    FOIL,
+    NORMAL,
+    RIFTBOUND,
+    UNCOMMON,
+    RiftboundService,
+)
 
 GAMES_URL = "https://api.justtcg.com/v1/games"
 CARDS_URL = "https://api.justtcg.com/v1/cards"
 
 
+@logger
 class PriceService:
+    logger: logging.Logger
+
     def __init__(self, rbService: RiftboundService):
         self.rbService = rbService
 
     def get_game_slugs(self):
-        response = requests.get(GAMES_URL, headers={"x-api-key": os.environ["JUSTTCG_API_KEY"]})
+        response = requests.get(
+            GAMES_URL, headers={"x-api-key": os.environ["JUSTTCG_API_KEY"]}
+        )
 
         response.raise_for_status()
 
         for game in response.json()["data"]:
             if game["id"].contains("riftbound"):
-                print(game["id"], game["name"])
+                self.logger.info(f"Found game: {game['id']} - {game['name']}")
+                return game["id"]
 
     def get_card(self, duration: str = "7d"):
         """
@@ -43,34 +59,40 @@ class PriceService:
         if response.json():
             print(response.json())
 
-    def get_cards(self, duration: str = "7d") -> list[JustTCGCard]:
-        all_staples = self.rbService.get_staple_cards_dict()
-        json_list = []
-        for slug, staple in all_staples.items():
-            temp = {
+    def get_prices(
+        self, cards: dict[str, RiftcodexItem], duration: str = "7d"
+    ) -> list[JustTCGCard]:
+        card_requests = []
+        for tcgplayer_id, card in cards.items():
+            req = {
                 "game": RIFTBOUND,
-                "tcgplayerId": staple.tcgplayer_id,
+                "tcgplayerId": tcgplayer_id,
                 "condition": "NM",
-                "printing": staple.printing,
+                "printing": (
+                    NORMAL if card.classification.rarity in [COMMON, UNCOMMON] else FOIL
+                ),
                 "priceHistoryDuration": duration,
             }
-            json_list.append(temp)
+            card_requests.append(req)
 
-        chunks = [json_list[i : i + 20] for i in range(0, len(json_list), 20)]
-        result: list[JustTCGCard] = []
+        chunks = [card_requests[i : i + 20] for i in range(0, len(card_requests), 20)]
+        results: list[JustTCGCard] = []
         for chunk in chunks:
             response = requests.post(
                 CARDS_URL,
-                headers={"x-api-key": os.environ["JUSTTCG_API_KEY"], "Content-Type": "application/json"},
+                headers={
+                    "x-api-key": os.environ["JUSTTCG_API_KEY"],
+                    "Content-Type": "application/json",
+                },
                 json=chunk,
             )
 
             response.raise_for_status()
             if response.json():
-                print(response.json())
                 if response.json()["data"]:
                     for card in response.json()["data"]:
                         justtcg_card = JustTCGCard.model_validate(card)
-                        result.append(justtcg_card)
+                        results.append(justtcg_card)
 
-        return result
+        self.logger.info(f"Retrieved {len(results)} cards from JustTCG")
+        return results
