@@ -57,11 +57,26 @@ jobs:
           public.ecr.aws/lambda/python:3.14 \
           -c '
             pip install --no-cache-dir \
-              poetry==2.3.4 \
+              poetry==2.4.1 \
               poetry-plugin-export==1.10.0
 
-            poetry export --format requirements.txt --without-hashes |
-              pip install --no-cache-dir -r /dev/stdin -t /var/task
+            poetry export \
+              --format requirements.txt \
+              --without-hashes \
+              -o /tmp/requirements.txt
+
+            echo "=== Requirements ==="
+            cat /tmp/requirements.txt
+
+            echo "=== Installing ==="
+            pip install \
+              --no-cache-dir \
+              -r /tmp/requirements.txt \
+              -t /var/task
+
+            echo "=== Installed ==="
+            pwd
+            ls -la /var/task
           '
 
         sudo find lambdas/artifact/${{ matrix.service }} -name "__pycache__" -type d -exec rm -rf {} +
