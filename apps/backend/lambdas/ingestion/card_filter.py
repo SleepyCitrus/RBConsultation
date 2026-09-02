@@ -31,8 +31,9 @@ class CardFilter:
             rarity_set = RARITY_SETS[rarity]
 
         for card in cards:
-            if card.classification.rarity in rarity_set and rarity == "epic":
-                if card.classification.rarity == "rare" and not (
+            card_rarity = card.classification.rarity
+            if card_rarity in rarity_set and rarity == EPIC:
+                if card_rarity == RARE and not (
                     card.metadata.signature or card.metadata.overnumbered
                 ):
                     # regular legend can skip
@@ -40,7 +41,7 @@ class CardFilter:
                 else:
                     if card.tcgplayer_id not in filtered_cards:
                         filtered_cards[card.tcgplayer_id] = card
-            elif card.classification.rarity in rarity_set and rarity == "uncommon":
+            elif card_rarity in rarity_set and rarity == UNCOMMON:
                 if card.tcgplayer_id not in filtered_cards:
                     filtered_cards[card.tcgplayer_id] = card
 

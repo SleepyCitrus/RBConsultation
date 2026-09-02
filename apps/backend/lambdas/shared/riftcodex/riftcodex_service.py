@@ -26,6 +26,10 @@ class RiftcodexService:
             try:
                 if json_blob.get("tcgplayer_id", None):
                     converted_item = RiftcodexItem.model_validate(json_blob)
+                    # Explicitly convert rarity to lowercase
+                    converted_item.classification.rarity = (
+                        converted_item.classification.rarity.lower()
+                    )
                     codex_items.append(converted_item)
             except Exception as e:
                 self.logger.error(f"Error converting item: {e} - {json_blob}")
