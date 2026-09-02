@@ -92,7 +92,9 @@ class PriceService:
                 # Free tier limits is 10 requests / min so worst case wait 60 seconds before retrying.
                 wait = 60
 
-            self.logger.info(f"Throttled by JustTCG API. Retrying in {wait} seconds")
+            self.logger.info(
+                f"Throttled by JustTCG API. Retrying in {wait} seconds: {response}"
+            )
             time.sleep(wait)
 
         return results

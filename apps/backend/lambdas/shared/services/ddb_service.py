@@ -61,7 +61,7 @@ class DDBService:
                         item["name"] = card.name
                         item["tcgplayerId"] = card.tcgplayerId
                         item["rarity"] = card.rarity
-                        item["set"] = card.set
+                        item["set"] = card.set_name
 
                 if item:
                     rows_to_write.append(item)
