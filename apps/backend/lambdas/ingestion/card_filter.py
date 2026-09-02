@@ -46,6 +46,6 @@ class CardFilter:
                     filtered_cards[card.tcgplayer_id] = card
 
         self.logger.info(
-            f"Filtered {len(filtered_cards)} cards for rarity {rarity_set}"
+            f"Filtered {len(filtered_cards)} cards for rarity {rarity_set}: {[card.name for _, card in filtered_cards.items()]}"
         )
         return filtered_cards
