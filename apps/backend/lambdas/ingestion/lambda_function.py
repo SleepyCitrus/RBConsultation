@@ -37,8 +37,7 @@ def lambda_handler(event, context):
 
     # In total this would require approximately 545 - 568 requests / month which keeps us well within the free tier.
 
-    custom_details = event.get("detail", {})
-    process_rarity = custom_details.get("rarity", "")
+    process_rarity = event.get("rarity", "")
 
     if not process_rarity:
         return {
