@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 
 import boto3
 from ingestion.justtcg.justtcg_card import JustTCGCard
@@ -51,7 +51,7 @@ class DDBService:
                 # We only want the pricing for the first variant which should be the lower rarity
                 variant = card.variants[0]
 
-                last_timestamp = datetime.min
+                last_timestamp = datetime.min.replace(tzinfo=timezone.utc)
                 item = {}
 
                 for price_history in variant.priceHistory:
