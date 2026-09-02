@@ -32,22 +32,32 @@ class RiftcodexService:
 
         results: list[RiftcodexItem] = []
 
+        headers = {
+            "User-Agent": (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                "AppleWebKit/537.36 (KHTML, like Gecko) "
+                "Chrome/140.0.0.0 Safari/537.36"
+            ),
+            "Accept": "application/json",
+        }
+
         for set in RIFTBOUND_SETS:
             query_params = {
                 "sort": "name",
-                "dir": "1",
+                "dir": 1,
                 "set_id": set,
                 "size": 100,
                 "page": 1,
             }
 
             while True:
-                response = requests.get(f"{self.BASE_URL}/cards", params=query_params)
+                response = requests.get(
+                    f"{self.BASE_URL}/cards", params=query_params, headers=headers
+                )
                 response.raise_for_status()
 
                 items = self._convert_response(response.json()["items"])
 
-                print(items)
                 results.extend(items)
 
                 if response.json()["pages"] > query_params["page"]:
