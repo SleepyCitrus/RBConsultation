@@ -1,5 +1,6 @@
 import logging
 import os
+import time
 
 import requests
 from ingestion.justtcg.justtcg_card import JustTCGCard
@@ -59,6 +60,42 @@ class PriceService:
         if response.json():
             print(response.json())
 
+    def get_with_retry(self, chunk: list):
+        results: list[JustTCGCard] = []
+
+        for attempt in range(5):
+            response = requests.post(
+                CARDS_URL,
+                headers={
+                    "x-api-key": os.environ["JUSTTCG_API_KEY"],
+                    "Content-Type": "application/json",
+                },
+                json=chunk,
+            )
+
+            if response.status_code != 429:
+                # Not a throttling issue, either raise error or return results
+                response.raise_for_status()
+                if response.json():
+                    if response.json()["data"]:
+                        for card in response.json()["data"]:
+                            justtcg_card = JustTCGCard.model_validate(card)
+                            results.append(justtcg_card)
+
+                return results
+
+            retry_after = response.headers.get("Retry-After")
+
+            if retry_after:
+                wait = float(retry_after)
+            else:
+                # Free tier limits is 10 requests / min so worst case wait 60 seconds before retrying.
+                wait = 60
+
+            time.sleep(wait)
+
+        return results
+
     def get_prices(
         self, cards: dict[str, RiftcodexItem], duration: str = "7d"
     ) -> list[JustTCGCard]:
@@ -78,21 +115,8 @@ class PriceService:
         chunks = [card_requests[i : i + 20] for i in range(0, len(card_requests), 20)]
         results: list[JustTCGCard] = []
         for chunk in chunks:
-            response = requests.post(
-                CARDS_URL,
-                headers={
-                    "x-api-key": os.environ["JUSTTCG_API_KEY"],
-                    "Content-Type": "application/json",
-                },
-                json=chunk,
-            )
-
-            response.raise_for_status()
-            if response.json():
-                if response.json()["data"]:
-                    for card in response.json()["data"]:
-                        justtcg_card = JustTCGCard.model_validate(card)
-                        results.append(justtcg_card)
+            chunk_results = self.get_with_retry(chunk)
+            results.extend(chunk_results)
 
         self.logger.info(f"Retrieved {len(results)} cards from JustTCG")
         return results

@@ -45,5 +45,7 @@ class CardFilter:
                 if card.tcgplayer_id not in filtered_cards:
                     filtered_cards[card.tcgplayer_id] = card
 
-        self.logger.info(f"Filtered {len(filtered_cards)} cards for rarity {rarity}")
+        self.logger.info(
+            f"Filtered {len(filtered_cards)} cards for rarity {rarity_set}"
+        )
         return filtered_cards
