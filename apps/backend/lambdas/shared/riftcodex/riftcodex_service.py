@@ -1,7 +1,6 @@
 import logging
 
 import requests
-from pydantic import TypeAdapter
 from shared.logging.logger import logger
 from shared.riftcodex.riftcodex_item import RiftcodexItem
 from shared.services.riftbound_service import RIFTBOUND_SETS
@@ -21,8 +20,17 @@ class RiftcodexService:
         """
         Convert the response from Riftcodex to a list of RiftcodexItem objects.
         """
-        adapter = TypeAdapter(list[RiftcodexItem])
-        return adapter.validate_python(input)
+        codex_items = []
+
+        for json_blob in input:
+            try:
+                if json_blob.get("tcgplayer_id", None):
+                    converted_item = RiftcodexItem.model_validate(json_blob)
+                    codex_items.append(converted_item)
+            except Exception as e:
+                self.logger.error(f"Error converting item: {e} - {json_blob}")
+
+        return codex_items
 
     def get_all_cards(self) -> list[RiftcodexItem]:
         """
