@@ -1,19 +1,15 @@
 import logging
 import os
 import time
+from typing import Optional
 
 import requests
 from ingestion.justtcg.justtcg_card import JustTCGCard
 from shared.logging.logger import logger
+from shared.riftbound.riftbound_booster_pack import FOIL, NEAR_MINT, NORMAL, SEALED
+from shared.riftbound.riftbound_metadata import COMMON, RIFTBOUND, UNCOMMON
 from shared.riftcodex.riftcodex_item import RiftcodexItem
-from shared.services.riftbound_service import (
-    COMMON,
-    FOIL,
-    NORMAL,
-    RIFTBOUND,
-    UNCOMMON,
-    RiftboundService,
-)
+from shared.services.catalog_service import CatalogService
 
 GAMES_URL = "https://api.justtcg.com/v1/games"
 CARDS_URL = "https://api.justtcg.com/v1/cards"
@@ -23,8 +19,8 @@ CARDS_URL = "https://api.justtcg.com/v1/cards"
 class PriceService:
     logger: logging.Logger
 
-    def __init__(self, rbService: RiftboundService):
-        self.rbService = rbService
+    def __init__(self, catalogService: CatalogService):
+        self.catalogService = catalogService
 
     def get_game_slugs(self):
         response = requests.get(
@@ -38,40 +34,47 @@ class PriceService:
                 self.logger.info(f"Found game: {game['id']} - {game['name']}")
                 return game["id"]
 
-    def get_card(self, duration: str = "7d"):
+    def get_price(self, tcgplayerId: str, duration: str = "7d") -> JustTCGCard:
         """
-        Test function to get a single card.
-        If getting multiple cards, use get_cards() instead.
+        Gets the price history of a single card.
+        If getting multiple cards, use get_prices() instead.
         """
 
-        response = requests.get(
-            CARDS_URL,
-            headers={"x-api-key": os.environ["JUSTTCG_API_KEY"]},
-            params={
-                "game": RIFTBOUND,
-                # "cardId": get_card_slug("defy", ORIGINS, COMMON),
-                "tcgplayerId": "652814",
-                "condition": "NM",
-                "printing": "Normal",
-                "priceHistoryDuration": duration,
-            },
-        )
-        response.raise_for_status()
-        if response.json():
-            print(response.json())
+        params = {
+            "game": RIFTBOUND,
+            "tcgplayerId": "652814",
+            "condition": SEALED,
+            "language": "English",
+        }
 
-    def get_with_retry(self, chunk: list):
+        return self.get_with_retry(params=params, chunk=None)[0]
+
+    def get_with_retry(
+        self, params: Optional[dict], chunk: Optional[list[dict]]
+    ) -> list[JustTCGCard]:
         results: list[JustTCGCard] = []
 
         for attempt in range(5):
-            response = requests.post(
-                CARDS_URL,
-                headers={
-                    "x-api-key": os.environ["JUSTTCG_API_KEY"],
-                    "Content-Type": "application/json",
-                },
-                json=chunk,
-            )
+            response: requests.Response
+
+            if params:
+                # singular request, use get instead of post
+                response = requests.get(
+                    CARDS_URL,
+                    headers={"x-api-key": os.environ["JUSTTCG_API_KEY"]},
+                    params=params,
+                )
+            elif chunk:
+                response = requests.post(
+                    CARDS_URL,
+                    headers={
+                        "x-api-key": os.environ["JUSTTCG_API_KEY"],
+                        "Content-Type": "application/json",
+                    },
+                    json=chunk,
+                )
+            else:
+                return []
 
             if response.status_code != 429:
                 # Not a throttling issue, either raise error or return results
@@ -107,7 +110,7 @@ class PriceService:
             req = {
                 "game": RIFTBOUND,
                 "tcgplayerId": tcgplayer_id,
-                "condition": "NM",
+                "condition": NEAR_MINT,
                 "printing": (
                     NORMAL if card.classification.rarity in [COMMON, UNCOMMON] else FOIL
                 ),
@@ -118,7 +121,7 @@ class PriceService:
         chunks = [card_requests[i : i + 20] for i in range(0, len(card_requests), 20)]
         results: list[JustTCGCard] = []
         for chunk in chunks:
-            chunk_results = self.get_with_retry(chunk)
+            chunk_results = self.get_with_retry(None, chunk)
             results.extend(chunk_results)
 
         self.logger.info(f"Retrieved {len(results)} cards from JustTCG")

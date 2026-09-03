@@ -1,17 +1,19 @@
 import logging
-from datetime import datetime, timezone
+from typing import Any
 
 import boto3
+from boto3.dynamodb.conditions import Key
 from ingestion.justtcg.justtcg_card import JustTCGCard
 from shared.logging.logger import logger
-from shared.riftcodex.riftcodex_item import RiftcodexItem
+from shared.riftbound.riftbound_metadata import RIFTBOUND_SET_CAPITALIZED_LABELS
 
-dynamodb = boto3.resource("dynamodb")
+dynamodb = boto3.resource("dynamodb", region_name="us-west-1")
 
 CARD_METADATA_TABLE = "CardMetadata"
 # TODO: V1 has historical information for a subset of cards, not sure what to do with
 # it yet so bumping up the version and making a new table. Come back to this later
 CARD_PRICE_TABLE = "CardPriceV2"
+PRICE_BY_RARITY_GSI = "Price_By_Set_Rarity"
 
 
 @logger
@@ -40,33 +42,45 @@ class DDBService:
             )
             table.put_item(Item=item)
 
-    def write_cards_price(
-        self, priced_cards: list[JustTCGCard], card_details: dict[str, RiftcodexItem]
-    ):
+    def query_prices(self, set: str):
+        """
+        Get prices by set from the prices table GSI.
+        """
+        self.logger.info(f"Querying prices from DynamoDB")
+
         table = self.ddb.Table(CARD_PRICE_TABLE)
 
-        rows_to_write = []
-        for card in priced_cards:
-            if card.variants:
-                # We only want the pricing for the first variant which should be the lower rarity
-                variant = card.variants[0]
+        if set in RIFTBOUND_SET_CAPITALIZED_LABELS:
 
-                last_timestamp = datetime.min.replace(tzinfo=timezone.utc)
-                item = {}
+            items = []
+            last_evaluated_key = None
 
-                for price_history in variant.priceHistory:
-                    if price_history.t > last_timestamp:
-                        last_timestamp = price_history.t
-                        item = price_history.model_dump(include={"p", "t"})
-                        item["name"] = card.name
-                        item["tcgplayerId"] = card.tcgplayerId
-                        item["rarity"] = card.rarity
-                        item["set"] = card.set_name
+            while True:
+                query_params = {
+                    "IndexName": PRICE_BY_RARITY_GSI,
+                    "KeyConditionExpression": Key("set").eq(set),
+                }
 
-                if item:
-                    rows_to_write.append(item)
+                if last_evaluated_key:
+                    query_params["ExclusiveStartKey"] = last_evaluated_key
 
+                response = table.query(**query_params)
+
+                # 4. Extract and print the returned items
+                items.extend(response.get("Items", []))
+
+                last_evaluated_key = response.get("LastEvaluatedKey", None)
+                if not last_evaluated_key:
+                    break
+
+            print(f"Retrieved {len(items)} items from GSI.")
+            return items
+
+    def batch_write_prices(self, rows_to_write: list[dict[str, Any]]):
         self.logger.info(f"Writing {len(rows_to_write)} rows to DynamoDB")
+
+        table = self.ddb.Table(CARD_PRICE_TABLE)
+
         try:
             with table.batch_writer() as batch:
                 for row in rows_to_write:

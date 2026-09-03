@@ -1,40 +1,21 @@
-# Game name
-RIFTBOUND = "riftbound-league-of-legends-trading-card-game"
-
-# Colors
-RED = "red"
-ORANGE = "orange"
-YELLOW = "yellow"
-GREEN = "green"
-BLUE = "blue"
-PURPLE = "purple"
-
-# Sets
-ORIGINS = "origins"
-SPIRITFORGED = "spiritforged"
-UNLEASHED = "unleashed"
-VENDETTA = "vendetta"
-
-# Rarity
-COMMON = "common"
-UNCOMMON = "uncommon"
-RARE = "rare"
-EPIC = "epic"
-SHOWCASE = "showcase"
-
-# Printing
-NORMAL = "Normal"
-FOIL = "Foil"
-
-# Condition
-NEAR_MINT = "Near Mint"
-
-# Set Labels
-ORIGINS = "ogn"
-SPIRITFORGED = "sfd"
-UNLEASHED = "unl"
-VENDETTA = "ven"
-RIFTBOUND_SETS = [ORIGINS, SPIRITFORGED, UNLEASHED, VENDETTA]
+from shared.riftbound.riftbound_booster_pack import FOIL, NORMAL
+from shared.riftbound.riftbound_metadata import (
+    BLUE,
+    COMMON,
+    EPIC,
+    GREEN,
+    ORANGE,
+    ORIGINS_LABEL,
+    PURPLE,
+    RARE,
+    RED,
+    RIFTBOUND,
+    SPIRITFORGED_LABEL,
+    UNCOMMON,
+    UNLEASHED_LABEL,
+    VENDETTA_LABEL,
+    YELLOW,
+)
 
 
 class StapleCard:
@@ -52,7 +33,11 @@ class StapleCard:
         self.tcgplayer_id = tcgplayer_id  # Optional, mostly used for searches
 
 
-class RiftboundService:
+class CatalogService:
+    """
+    Provides indexes of popular Riftbound cards to track.
+    """
+
     def get_card_slug(self, card_name: str, card_set: str, rarity: str) -> str:
         """
         Get the slug for a card given its name.
@@ -76,42 +61,42 @@ class RiftboundService:
             # Seals - 6
             StapleCard(
                 name="Seal of Rage",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=EPIC,
                 color=RED,
                 tcgplayer_id=652814,
             ),  # CHECK
             StapleCard(
                 name="Seal of Strength",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=EPIC,
                 color=ORANGE,
                 tcgplayer_id=652950,
             ),  # CHECK
             StapleCard(
                 name="Seal of Unity",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=EPIC,
                 color=YELLOW,
                 tcgplayer_id=653042,
             ),  # CHECK
             StapleCard(
                 name="Seal of Focus",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=EPIC,
                 color=GREEN,
                 tcgplayer_id=652861,
             ),  # CHECK
             StapleCard(
                 name="Seal of Insight",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=EPIC,
                 color=BLUE,
                 tcgplayer_id=652902,
             ),  # CHECK
             StapleCard(
                 name="Seal of Discord",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=EPIC,
                 color=PURPLE,
                 tcgplayer_id=652996,
@@ -119,49 +104,49 @@ class RiftboundService:
             # Red - 7
             StapleCard(
                 name="Falling Star",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=RARE,
                 color=RED,
                 tcgplayer_id=652801,
             ),
             StapleCard(
                 name="Ferrous Forerunner",
-                set=SPIRITFORGED,
+                set=SPIRITFORGED_LABEL,
                 rarity=RARE,
                 color=RED,
                 tcgplayer_id=666364,
             ),
             StapleCard(
                 name="Kai'Sa, Survivor",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=EPIC,
                 color=RED,
                 tcgplayer_id=652812,
             ),  # CHECK
             StapleCard(
                 name="Darius, Trifarian",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=RARE,
                 color=RED,
                 tcgplayer_id=652798,
             ),
             StapleCard(
                 name="Pyke, Dockside Butcher",
-                set=UNLEASHED,
+                set=UNLEASHED_LABEL,
                 rarity=EPIC,
                 color=RED,
                 tcgplayer_id=685003,
             ),
             StapleCard(
                 name="Rek'Sai, Breacher",
-                set=SPIRITFORGED,
+                set=SPIRITFORGED_LABEL,
                 rarity=EPIC,
                 color=RED,
                 tcgplayer_id=666493,
             ),
             StapleCard(
                 name="Immortal Phoenix",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=EPIC,
                 color=RED,
                 tcgplayer_id=652810,
@@ -169,49 +154,49 @@ class RiftboundService:
             # Orange - 7
             StapleCard(
                 name="Sabotage",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=RARE,
                 color=ORANGE,
                 tcgplayer_id=652941,
             ),
             StapleCard(
                 name="Rengar, Trophy Hunter",
-                set=UNLEASHED,
+                set=UNLEASHED_LABEL,
                 rarity=EPIC,
                 color=ORANGE,
                 tcgplayer_id=684215,
             ),
             StapleCard(
                 name="Akshan, Mischievous",
-                set=SPIRITFORGED,
+                set=SPIRITFORGED_LABEL,
                 rarity=RARE,
                 color=ORANGE,
                 tcgplayer_id=666888,
             ),
             StapleCard(
                 name="Irresistible Faefolk",
-                set=UNLEASHED,
+                set=UNLEASHED_LABEL,
                 rarity=RARE,
                 color=ORANGE,
                 tcgplayer_id=686325,
             ),
             StapleCard(
                 name="Elder Dragon",
-                set=UNLEASHED,
+                set=UNLEASHED_LABEL,
                 rarity=EPIC,
                 color=ORANGE,
                 tcgplayer_id=685007,
             ),
             StapleCard(
                 name="Dazzling Aurora",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=EPIC,
                 color=ORANGE,
                 tcgplayer_id=652946,
             ),
             StapleCard(
                 name="Sett, Brawler",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=EPIC,
                 color=ORANGE,
                 tcgplayer_id=652951,
@@ -219,56 +204,56 @@ class RiftboundService:
             # Yellow - 8
             StapleCard(
                 name="Salvage",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=UNCOMMON,
                 color=YELLOW,
                 tcgplayer_id=653018,
             ),
             StapleCard(
                 name="Vi, Peacekeeper",
-                set=UNLEASHED,
+                set=UNLEASHED_LABEL,
                 rarity=EPIC,
                 color=YELLOW,
                 tcgplayer_id=685595,
             ),
             StapleCard(
                 name="Sacrifice",
-                set=UNLEASHED,
+                set=UNLEASHED_LABEL,
                 rarity=RARE,
                 color=YELLOW,
                 tcgplayer_id=684479,
             ),
             StapleCard(
                 name="Divine Judgment",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=EPIC,
                 color=YELLOW,
                 tcgplayer_id=653041,
             ),
             StapleCard(
                 name="Azir, Sovereign",
-                set=SPIRITFORGED,
+                set=SPIRITFORGED_LABEL,
                 rarity=EPIC,
                 color=YELLOW,
                 tcgplayer_id=666473,
             ),
             StapleCard(
                 name="Baited Hook",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=EPIC,
                 color=YELLOW,
                 tcgplayer_id=653038,
             ),
             StapleCard(
                 name="Rift Herald",
-                set=UNLEASHED,
+                set=UNLEASHED_LABEL,
                 rarity=EPIC,
                 color=YELLOW,
                 tcgplayer_id=684546,
             ),
             StapleCard(
                 name="The Ruination",
-                set=UNLEASHED,
+                set=UNLEASHED_LABEL,
                 rarity=EPIC,
                 color=YELLOW,
                 tcgplayer_id=685492,
@@ -276,70 +261,70 @@ class RiftboundService:
             # Green - 10
             StapleCard(
                 name="Defy",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=COMMON,
                 color=GREEN,
                 tcgplayer_id=652821,
             ),
             StapleCard(
                 name="Discipline",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=UNCOMMON,
                 color=GREEN,
                 tcgplayer_id=652834,
             ),  # CHECK
             StapleCard(
                 name="Scuttle Crab",
-                set=UNLEASHED,
+                set=UNLEASHED_LABEL,
                 rarity=RARE,
                 color=GREEN,
                 tcgplayer_id=685519,
             ),  # CHECK
             StapleCard(
                 name="En Garde",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=COMMON,
                 color=GREEN,
                 tcgplayer_id=652822,
             ),
             StapleCard(
                 name="Zhonya's Hourglass",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=RARE,
                 color=GREEN,
                 tcgplayer_id=652855,
             ),
             StapleCard(
                 name="Not So Fast",
-                set=SPIRITFORGED,
+                set=SPIRITFORGED_LABEL,
                 rarity=UNCOMMON,
                 color=GREEN,
                 tcgplayer_id=665592,
             ),
             StapleCard(
                 name="Stellacorn Herder",
-                set=SPIRITFORGED,
+                set=SPIRITFORGED_LABEL,
                 rarity=COMMON,
                 color=GREEN,
                 tcgplayer_id=665141,
             ),
             StapleCard(
                 name="Guardian Angel",
-                set=SPIRITFORGED,
+                set=SPIRITFORGED_LABEL,
                 rarity=RARE,
                 color=GREEN,
                 tcgplayer_id=663435,
             ),
             StapleCard(
                 name="Irelia, Fervent",
-                set=SPIRITFORGED,
+                set=SPIRITFORGED_LABEL,
                 rarity=EPIC,
                 color=GREEN,
                 tcgplayer_id=664885,
             ),  # CHECK
             StapleCard(
                 name="Vilemaw",
-                set=UNLEASHED,
+                set=UNLEASHED_LABEL,
                 rarity=EPIC,
                 color=GREEN,
                 tcgplayer_id=684125,
@@ -347,63 +332,63 @@ class RiftboundService:
             # Blue - 9
             StapleCard(
                 name="Thousand-Tailed Watcher",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=RARE,
                 color=BLUE,
                 tcgplayer_id=652898,
             ),
             StapleCard(
                 name="Bellows Breath",
-                set=SPIRITFORGED,
+                set=SPIRITFORGED_LABEL,
                 rarity=RARE,
                 color=BLUE,
                 tcgplayer_id=665009,
             ),
             StapleCard(
                 name="Sprite Fountain",
-                set=UNLEASHED,
+                set=UNLEASHED_LABEL,
                 rarity=UNCOMMON,
                 color=BLUE,
                 tcgplayer_id=685589,
             ),
             StapleCard(
                 name="Time Warp",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=EPIC,
                 color=BLUE,
                 tcgplayer_id=652905,
             ),
             StapleCard(
                 name="Unchecked Power",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=EPIC,
                 color=BLUE,
                 tcgplayer_id=652906,
             ),
             StapleCard(
                 name="Mel, Newly Awakened",
-                set=VENDETTA,
+                set=VENDETTA_LABEL,
                 rarity=EPIC,
                 color=BLUE,
                 tcgplayer_id=706064,
             ),
             StapleCard(
                 name="Progress Day",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=RARE,
                 color=BLUE,
                 tcgplayer_id=652896,
             ),
             StapleCard(
                 name="Hwei, Brooding Painter",
-                set=UNLEASHED,
+                set=UNLEASHED_LABEL,
                 rarity=RARE,
                 color=BLUE,
                 tcgplayer_id=684474,
             ),
             StapleCard(
                 name="Premonition",
-                set=SPIRITFORGED,
+                set=SPIRITFORGED_LABEL,
                 rarity=EPIC,
                 color=BLUE,
                 tcgplayer_id=665014,
@@ -411,91 +396,91 @@ class RiftboundService:
             # Purple - 13
             StapleCard(
                 name="Stacked Deck",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=UNCOMMON,
                 color=PURPLE,
                 tcgplayer_id=652972,
             ),
             StapleCard(
                 name="Fizz, Trickster",
-                set=SPIRITFORGED,
+                set=SPIRITFORGED_LABEL,
                 rarity=RARE,
                 color=PURPLE,
                 tcgplayer_id=666489,
             ),
             StapleCard(
                 name="Tideturner",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=RARE,
                 color=PURPLE,
                 tcgplayer_id=652990,
             ),
             StapleCard(
                 name="Vex, Apathetic",
-                set=UNLEASHED,
+                set=UNLEASHED_LABEL,
                 rarity=EPIC,
                 color=PURPLE,
                 tcgplayer_id=685949,
             ),
             StapleCard(
                 name="Kennen, Storm of Shuriken",
-                set=VENDETTA,
+                set=VENDETTA_LABEL,
                 rarity=UNCOMMON,
                 color=PURPLE,
                 tcgplayer_id=706051,
             ),
             StapleCard(
                 name="Last Rites",
-                set=SPIRITFORGED,
+                set=SPIRITFORGED_LABEL,
                 rarity=EPIC,
                 color=PURPLE,
                 tcgplayer_id=665029,
             ),
             StapleCard(
                 name="Baron Nashor",
-                set=UNLEASHED,
+                set=UNLEASHED_LABEL,
                 rarity=EPIC,
                 color=PURPLE,
                 tcgplayer_id=683790,
             ),
             StapleCard(
                 name="Invert Timelines",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=EPIC,
                 color=PURPLE,
                 tcgplayer_id=652992,
             ),
             StapleCard(
                 name="Rhasa the Sunderer",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=RARE,
                 color=PURPLE,
                 tcgplayer_id=652985,
             ),
             StapleCard(
                 name="Nocturne, Horrifying",
-                set=ORIGINS,
+                set=ORIGINS_LABEL,
                 rarity=RARE,
                 color=PURPLE,
                 tcgplayer_id=652984,
             ),
             StapleCard(
                 name="Pyke, Returned",
-                set=UNLEASHED,
+                set=UNLEASHED_LABEL,
                 rarity=RARE,
                 color=PURPLE,
                 tcgplayer_id=684509,
             ),
             StapleCard(
                 name="Downwell",
-                set=SPIRITFORGED,
+                set=SPIRITFORGED_LABEL,
                 rarity=EPIC,
                 color=PURPLE,
                 tcgplayer_id=666477,
             ),
             StapleCard(
                 name="Ezreal, Prodigy",
-                set=SPIRITFORGED,
+                set=SPIRITFORGED_LABEL,
                 rarity=EPIC,
                 color=PURPLE,
                 tcgplayer_id=666825,

@@ -2,8 +2,8 @@ import logging
 
 import requests
 from shared.logging.logger import logger
+from shared.riftbound.riftbound_metadata import RIFTBOUND_SET_IDS
 from shared.riftcodex.riftcodex_item import RiftcodexItem
-from shared.services.riftbound_service import RIFTBOUND_SETS
 
 
 @logger
@@ -53,7 +53,7 @@ class RiftcodexService:
             "Accept": "application/json",
         }
 
-        for set in RIFTBOUND_SETS:
+        for set in RIFTBOUND_SET_IDS:
             query_params = {
                 "sort": "name",
                 "dir": 1,

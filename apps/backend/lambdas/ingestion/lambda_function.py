@@ -1,13 +1,15 @@
 import json
+from datetime import datetime, timezone
 
 from ingestion.card_filter import CardFilter
+from ingestion.justtcg.justtcg_card import JustTCGCard
+from shared.database.ddb_service import DDBService
 from shared.riftcodex.riftcodex_service import RiftcodexService
-from shared.services.ddb_service import DDBService
+from shared.services.catalog_service import CatalogService
 from shared.services.price_service import PriceService
-from shared.services.riftbound_service import RiftboundService
 
-rbService = RiftboundService()
-priceService = PriceService(rbService)
+catalogService = CatalogService()
+priceService = PriceService(catalogService)
 ddbService = DDBService()
 riftcodexService = RiftcodexService()
 
@@ -48,6 +50,31 @@ def lambda_handler(event, context):
     cards_to_price = CardFilter().filter_cards(all_cards, process_rarity)
 
     priced_cards = priceService.get_prices(cards_to_price, duration="7d")
-    ddbService.write_cards_price(priced_cards, cards_to_price)
+    write_cards_price(priced_cards)
 
     return {"statusCode": 200, "body": json.dumps("Successful execution!")}
+
+
+def write_cards_price(priced_cards: list[JustTCGCard]):
+    rows_to_write = []
+    for card in priced_cards:
+        if card.variants:
+            # We only want the pricing for the first variant which should be the lower rarity
+            variant = card.variants[0]
+
+            last_timestamp = datetime.min.replace(tzinfo=timezone.utc)
+            item = {}
+
+            for price_history in variant.priceHistory:
+                if price_history.t > last_timestamp:
+                    last_timestamp = price_history.t
+                    item = price_history.model_dump(include={"p", "t"})
+                    item["name"] = card.name
+                    item["tcgplayerId"] = card.tcgplayerId
+                    item["rarity"] = card.rarity
+                    item["set"] = card.set_name
+
+            if item:
+                rows_to_write.append(item)
+
+    ddbService.batch_write_prices(rows_to_write=rows_to_write)
