@@ -40,12 +40,20 @@ UNCOMMON = "uncommon"
 RARE = "rare"
 EPIC = "epic"
 SHOWCASE = "showcase"
+SPECIAL_RARE = "SP"
+OVERNUMBERED = "overnumbered"
+SIGNATURE = "signature"
+ULTIMATE = "ultimate"
 RIFTBOUND_RARITY_CAPITALIZED_LABELS = [
     COMMON.capitalize(),
     UNCOMMON.capitalize(),
     RARE.capitalize(),
     EPIC.capitalize(),
     SHOWCASE.capitalize(),
+    SPECIAL_RARE.capitalize(),
+    OVERNUMBERED.capitalize(),
+    SIGNATURE.capitalize(),
+    ULTIMATE.capitalize(),
 ]
 
 # Types

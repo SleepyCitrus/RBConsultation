@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 from ingestion.card_filter import CardFilter
 from ingestion.justtcg.justtcg_card import JustTCGCard
 from shared.database.ddb_service import DDBService
+from shared.riftcodex.riftcodex_item import RiftcodexItem
 from shared.riftcodex.riftcodex_service import RiftcodexService
 from shared.services.catalog_service import CatalogService
 from shared.services.price_service import PriceService
@@ -50,12 +51,14 @@ def lambda_handler(event, context):
     cards_to_price = CardFilter().filter_cards(all_cards, process_rarity)
 
     priced_cards = priceService.get_prices(cards_to_price, duration="7d")
-    write_cards_price(priced_cards)
+    write_cards_price(priced_cards, cards_to_price)
 
     return {"statusCode": 200, "body": json.dumps("Successful execution!")}
 
 
-def write_cards_price(priced_cards: list[JustTCGCard]):
+def write_cards_price(
+    priced_cards: list[JustTCGCard], card_details: dict[str, RiftcodexItem]
+):
     rows_to_write = []
     for card in priced_cards:
         if card.variants:
@@ -71,7 +74,15 @@ def write_cards_price(priced_cards: list[JustTCGCard]):
                     item = price_history.model_dump(include={"p", "t"})
                     item["name"] = card.name
                     item["tcgplayerId"] = card.tcgplayerId
-                    item["rarity"] = card.rarity
+                    if (
+                        card_details.get(card.tcgplayerId, "")
+                        and card_details[card.tcgplayerId].classification.rarity
+                    ):
+                        item["rarity"] = card_details[
+                            card.tcgplayerId
+                        ].classification.rarity.capitalize()
+                    else:
+                        item["rarity"] = card.rarity.capitalize()
                     item["set"] = card.set_name
 
             if item:
