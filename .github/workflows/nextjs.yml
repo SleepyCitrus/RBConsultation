@@ -66,7 +66,7 @@ jobs:
           find out -maxdepth 2 -type f | head -50
 
           echo "Checking for basePath:"
-          grep -R 'rift-staples' out | head -30 || true
+          grep -R 'RBConsultation' out | head -30 || true
 
           echo "Checking for BAD root asset URLs:"
           grep -R 'href="/_next' out | head -30 || true
