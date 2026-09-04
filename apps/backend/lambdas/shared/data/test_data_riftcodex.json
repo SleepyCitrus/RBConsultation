@@ -1,0 +1,172 @@
+{
+  "items": [
+    {
+      "id": "69bc5bd7d308c64675ca8804",
+      "name": "Yasuo - Unforgiven (Overnumbered)",
+      "riftbound_id": "ogn-305-298",
+      "tcgplayer_id": "653105",
+      "collector_number": 305,
+      "attributes": {
+        "energy": null,
+        "might": null,
+        "power": null
+      },
+      "classification": {
+        "type": "Legend",
+        "supertype": null,
+        "rarity": "Showcase",
+        "domain": ["Calm", "Chaos"]
+      },
+      "text": {
+        "rich": "<p>:rb_energy_2:, :rb_exhaust:: Move a friendly unit to or from its base.</p>",
+        "plain": ":rb_energy_2:, :rb_exhaust:: Move a friendly unit to or from its base.",
+        "flavour": null
+      },
+      "set": {
+        "set_id": "OGN",
+        "label": "Origins"
+      },
+      "media": {
+        "image_url": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/2c804ec513085702763a9145fac93a8adb6c4783-1488x2078.png?accountingTag=RB",
+        "artist": "Quy Ho",
+        "accessibility_text": "Riftbound Legend: Unforgiven. [2], [T]: Move a friendly unit to or from its base."
+      },
+      "tags": ["Yasuo"],
+      "orientation": "portrait",
+      "metadata": {
+        "clean_name": "Yasuo Unforgiven Overnumbered",
+        "updated_on": "2026-07-10T22:44:41.193242+00:00",
+        "alternate_art": false,
+        "overnumbered": true,
+        "signature": false
+      },
+      "new": false
+    },
+    {
+      "id": "6a56ab94ff602fd324f475f8",
+      "name": "Ahri, Inquisitive",
+      "riftbound_id": "ven-sp3-006",
+      "tcgplayer_id": "705996",
+      "collector_number": 3,
+      "attributes": {
+        "energy": 3,
+        "might": 3,
+        "power": 1
+      },
+      "classification": {
+        "type": "Unit",
+        "supertype": "Champion",
+        "rarity": "Epic",
+        "domain": ["Mind"]
+      },
+      "text": {
+        "rich": "<p>When I attack or defend, give an enemy unit here -2 :rb_might: this turn, to a minimum of 1 :rb_might:.</p>",
+        "plain": "When I attack or defend, give an enemy unit here -2 :rb_might: this turn, to a minimum of 1 :rb_might:.",
+        "flavour": null
+      },
+      "set": {
+        "set_id": "VEN",
+        "label": "Vendetta"
+      },
+      "media": {
+        "image_url": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/e8d1993018d8317494cbaab4e4dd738c2e80740d-744x1039.png?accountingTag=RB",
+        "artist": "Wild Rift Splash Team",
+        "accessibility_text": "Riftbound Unit: Ahri, Inquisitive. When I attack or defend, give an enemy unit here -2 [S] this turn, to a minimum of 1 [S]."
+      },
+      "tags": ["Ahri", "Ionia"],
+      "orientation": "portrait",
+      "metadata": {
+        "clean_name": "Ahri Inquisitive",
+        "updated_on": "2026-07-14T21:35:16.288209+00:00",
+        "alternate_art": false,
+        "overnumbered": false,
+        "signature": false
+      },
+      "new": false
+    },
+    {
+      "id": "69bc5bded308c64675ca8882",
+      "name": "Fiora - Worthy (Alternate Art)",
+      "riftbound_id": "sfd-180a-221",
+      "tcgplayer_id": "665034",
+      "collector_number": 180,
+      "attributes": {
+        "energy": 3,
+        "might": 3,
+        "power": null
+      },
+      "classification": {
+        "type": "Unit",
+        "supertype": "Champion",
+        "rarity": "Showcase",
+        "domain": ["Order"]
+      },
+      "text": {
+        "rich": "<p>When a unit you control becomes [Mighty], you may pay :rb_rune_order: to ready it. (A unit is Mighty while it has 5+ :rb_might:.)</p>",
+        "plain": "When a unit you control becomes [Mighty], you may pay :rb_rune_order: to ready it. (A unit is Mighty while it has 5+ :rb_might:.)",
+        "flavour": "Strike quickly. Strike deftly."
+      },
+      "set": {
+        "set_id": "SFD",
+        "label": "Spiritforged"
+      },
+      "media": {
+        "image_url": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/e38428b921717edf676bd7f9628fc61b1355814c-744x1039.png?accountingTag=RB",
+        "artist": "League Splash Team",
+        "accessibility_text": "Riftbound Unit: Fiora, Worthy. When a unit you control becomes [Mighty], you may pay [C] to ready it. (A unit is Mighty while it has 5+ [S].)"
+      },
+      "tags": ["Fiora", "Demacia"],
+      "orientation": "portrait",
+      "metadata": {
+        "clean_name": "Fiora Worthy Alternate Art",
+        "updated_on": "2026-07-10T22:44:48.141486+00:00",
+        "alternate_art": true,
+        "overnumbered": false,
+        "signature": false
+      },
+      "new": false
+    },
+    {
+      "id": "69c5be69bf82ff7cb69f428b",
+      "name": "Baron Nashor (Ultimate)",
+      "riftbound_id": "unl-238-219",
+      "tcgplayer_id": "685925",
+      "collector_number": 238,
+      "attributes": {
+        "energy": 10,
+        "might": 12,
+        "power": 3
+      },
+      "classification": {
+        "type": "Unit",
+        "supertype": null,
+        "rarity": "Epic",
+        "domain": ["Chaos"]
+      },
+      "text": {
+        "rich": "<p>As you play me, add the Baron Pit battlefield token to the board if it's not there already. If you do, I enter there.<br />I can't be chosen by enemy spells and abilities.<br />Other friendly units have +2 :rb_might:.</p>",
+        "plain": "As you play me, add the Baron Pit battlefield token to the board if it's not there already. If you do, I enter there.I can't be chosen by enemy spells and abilities.Other friendly units have +2 :rb_might:.",
+        "flavour": null
+      },
+      "set": {
+        "set_id": "UNL",
+        "label": "Unleashed"
+      },
+      "media": {
+        "image_url": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/7e8d207a8057b97f9059ea6025a16e59229dc54d-744x1039.png?accountingTag=RB",
+        "artist": "張漁 ·ZHANG YU",
+        "accessibility_text": "Riftbound Unit: Baron Nashor. As you play me, add the Baron Pit battlefield token to the board if it's not there already. If you do, I enter there. I can't be chosen by enemy spells and abilities. Other friendly units have +2 [S]."
+      },
+      "tags": ["The Void"],
+      "orientation": "portrait",
+      "metadata": {
+        "clean_name": "Baron Nashor Ultimate",
+        "updated_on": "2026-07-10T22:45:12.961560+00:00",
+        "alternate_art": false,
+        "overnumbered": false,
+        "signature": false
+      },
+      "new": false
+    }
+  ]
+}

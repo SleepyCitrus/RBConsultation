@@ -1,10 +1,13 @@
+import json
 import logging
 
 import requests
+from pydantic import TypeAdapter
 from shared.logging.logger import logger
 from shared.riftbound.riftbound_metadata import (
     OVERNUMBERED,
     RIFTBOUND_SET_IDS,
+    SHOWCASE,
     SIGNATURE,
     SPECIAL_RARE,
     ULTIMATE,
@@ -57,8 +60,29 @@ class RiftcodexService:
             card_number, catalog_number = catalog[1], catalog[2]
 
             if card_number.lower().startswith(SPECIAL_RARE.lower()):
-                # e.g. Ahri, Inquisitive (ven-sp3-006)
+                # Ahri, Inquisitive
+                # ven-sp3-006
                 return SPECIAL_RARE
+
+            if (
+                card_number.endswith("*")
+                and card_number[:-1].isdigit()
+                and catalog_number.isdigit()
+                and int(card_number[:-1]) > int(catalog_number)
+            ):
+                # Yasuo - Unforgiven (Signature)
+                # ogn-305*-298
+                return SIGNATURE
+
+            if (
+                card_number.endswith("a")
+                and card_number[:-1].isdigit()
+                and catalog_number.isdigit()
+                and int(card_number[:-1]) < int(catalog_number)
+            ):
+                # Fiora - Worthy (Alternate Art)
+                # sfd-180a-221
+                return SHOWCASE
 
             if (
                 card_number.isdigit()
@@ -67,12 +91,11 @@ class RiftcodexService:
             ):
                 name_lower = card.name.lower()
 
-                if f"({SIGNATURE})" in name_lower:
-                    return SIGNATURE
-                elif f"({ULTIMATE})" in name_lower:
+                if f"({ULTIMATE})" in name_lower:
+                    # Baron Nashor (Ultimate)
+                    # unl-238-219
                     return ULTIMATE
-                else:
-                    return OVERNUMBERED
+                return OVERNUMBERED
 
         return card.classification.rarity
 
@@ -119,3 +142,18 @@ class RiftcodexService:
 
         self.logger.info(f"Retrieved {len(results)} cards from Riftcodex")
         return results
+
+
+def test_granular_rarity():
+
+    codex = RiftcodexService()
+    with open("./../data/test_data_riftcodex.json", "r", encoding="utf-8") as file:
+        data = json.load(file)
+
+        adapter = TypeAdapter(list[RiftcodexItem])
+        items = adapter.validate_python(data["items"])
+
+        for item in items:
+            rarity = codex.get_granular_rarity(item)
+
+            print(f"{item.name} rarity becomes {rarity}")
