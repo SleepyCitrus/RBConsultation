@@ -24,6 +24,7 @@ def lambda_handler(event, context):
         set_name = event["set_name"]
 
         items = aggService.get_aggregation_by_set(set_name)
+        print(items)
 
         return response(200, items)
 
