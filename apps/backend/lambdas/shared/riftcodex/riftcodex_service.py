@@ -59,7 +59,7 @@ class RiftcodexService:
             # not a special rare, check if we are dealing with ON or signature
             card_number, catalog_number = catalog[1], catalog[2]
 
-            if card_number.lower().startswith(SPECIAL_RARE.lower()):
+            if card_number.lower().startswith(SPECIAL_RARE):
                 # Ahri, Inquisitive
                 # ven-sp3-006
                 return SPECIAL_RARE

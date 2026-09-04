@@ -6,12 +6,12 @@ from shared.riftbound.riftbound_metadata import (
     EPIC,
     LEGEND,
     RARE,
-    SHOWCASE,
+    SHOWCASE_RARITY_TIERS,
     UNCOMMON,
 )
 from shared.riftcodex.riftcodex_item import RiftcodexItem
 
-RARITY_SETS = {UNCOMMON: [UNCOMMON, RARE], EPIC: [EPIC, SHOWCASE]}
+RARITY_SETS = {UNCOMMON: [UNCOMMON, RARE], EPIC: [EPIC, *SHOWCASE_RARITY_TIERS]}
 
 
 @logger
@@ -38,12 +38,13 @@ class CardFilter:
             rarity_set = RARITY_SETS[rarity]
 
         for card in cards:
-            card_rarity = card.classification.rarity
+            card_rarity = card.classification.rarity.lower()
 
-            if card.classification.type == LEGEND and not (
-                card.metadata.signature or card.metadata.overnumbered
+            if (
+                card.classification.type == LEGEND
+                and card_rarity not in SHOWCASE_RARITY_TIERS
             ):
-                # Skip regular legend cards but keep ON or sig ON ones
+                # Skip regular legend cards
                 continue
             elif card.classification.type == BATTLEFIELD:
                 # Skip battlefield cards since they're usually not worth anything

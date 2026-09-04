@@ -167,6 +167,48 @@
         "signature": false
       },
       "new": false
+    },
+    {
+      "id": "69bc5bdbd308c64675ca884b",
+      "name": "Ahri - Inquisitive (Signature)",
+      "riftbound_id": "sfd-227*-221",
+      "tcgplayer_id": "664913",
+      "collector_number": 227,
+      "attributes": {
+        "energy": 3,
+        "might": 3,
+        "power": 1
+      },
+      "classification": {
+        "type": "Unit",
+        "supertype": "Champion",
+        "rarity": "Showcase",
+        "domain": ["Mind"]
+      },
+      "text": {
+        "rich": "<p>When I attack or defend, give an enemy unit here -2 :rb_might: this turn, to a minimum of 1 :rb_might:.</p>",
+        "plain": "When I attack or defend, give an enemy unit here -2 :rb_might: this turn, to a minimum of 1 :rb_might:.",
+        "flavour": "Just remember...to follow the fox."
+      },
+      "set": {
+        "set_id": "SFD",
+        "label": "Spiritforged"
+      },
+      "media": {
+        "image_url": "https://cmsassets.rgpub.io/sanity/images/dsfx7636/game_data_live/608f786c30a7e80db87d3c2d45bc0c26b0840c5e-744x1039.png?accountingTag=RB",
+        "artist": "Shawn Tan",
+        "accessibility_text": "Riftbound Unit: Ahri, Inquisitive. When I attack or defend, give an enemy unit here -2 [S] this turn, to a minimum of 1 [S]."
+      },
+      "tags": ["Ahri"],
+      "orientation": "portrait",
+      "metadata": {
+        "clean_name": "Ahri Inquisitive Signature",
+        "updated_on": "2026-07-10T22:44:45.121378+00:00",
+        "alternate_art": false,
+        "overnumbered": false,
+        "signature": true
+      },
+      "new": false
     }
   ]
 }

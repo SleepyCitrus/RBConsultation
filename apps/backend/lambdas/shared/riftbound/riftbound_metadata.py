@@ -40,7 +40,7 @@ UNCOMMON = "uncommon"
 RARE = "rare"
 EPIC = "epic"
 SHOWCASE = "showcase"
-SPECIAL_RARE = "SP"
+SPECIAL_RARE = "sp"
 OVERNUMBERED = "overnumbered"
 SIGNATURE = "signature"
 ULTIMATE = "ultimate"
@@ -55,6 +55,8 @@ RIFTBOUND_RARITY_CAPITALIZED_LABELS = [
     SIGNATURE.capitalize(),
     ULTIMATE.capitalize(),
 ]
+
+SHOWCASE_RARITY_TIERS = [SHOWCASE, SPECIAL_RARE, OVERNUMBERED, SIGNATURE, ULTIMATE]
 
 # Types
 BATTLEFIELD = "Battlefield"

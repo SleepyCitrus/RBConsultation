@@ -74,10 +74,7 @@ def write_cards_price(
                     item = price_history.model_dump(include={"p", "t"})
                     item["name"] = card.name
                     item["tcgplayerId"] = card.tcgplayerId
-                    if (
-                        card_details.get(card.tcgplayerId, "")
-                        and card_details[card.tcgplayerId].classification.rarity
-                    ):
+                    if card_details.get(card.tcgplayerId, ""):
                         item["rarity"] = card_details[
                             card.tcgplayerId
                         ].classification.rarity.capitalize()
