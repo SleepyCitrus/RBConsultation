@@ -1,22 +1,30 @@
+import logging
 from collections import defaultdict
 from decimal import Decimal
 from typing import Optional
 
 from query.aggregation.aggregate import AggregatePrice, AggregateSet
 from shared.database.ddb_service import DDBService
-from shared.riftbound.riftbound_metadata import RIFTBOUND_SET_LABELS
+from shared.logging.logger import logger
+from shared.riftbound.riftbound_metadata import RIFTBOUND_SET_CAPITALIZED_LABELS
 
 
+@logger
 class AggregationService:
     """
     Calculates the average price by rarity for a set.
     """
 
+    logger: logging.Logger
+
     def __init__(self, ddbService: DDBService):
         self.ddbService = ddbService
 
     def get_aggregation_by_set(self, set_name: str) -> Optional[AggregateSet]:
-        if set not in RIFTBOUND_SET_LABELS:
+        if set_name not in RIFTBOUND_SET_CAPITALIZED_LABELS:
+            self.logger.info(
+                f"Invalid set name: {set_name} not in {RIFTBOUND_SET_CAPITALIZED_LABELS}"
+            )
             return None
 
         card_prices = self.ddbService.query_prices(set_name=set_name, rarity=None)

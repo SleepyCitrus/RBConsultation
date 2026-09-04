@@ -21,7 +21,7 @@ def response(status_code, body):
 
 def lambda_handler(event, context):
     try:
-        set_name = event["set_name"]
+        set_name = event.get("set_name", "")
 
         items = aggService.get_aggregation_by_set(set_name)
         print(items)
