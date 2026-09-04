@@ -37,7 +37,7 @@ class AggregationService:
             card_avg = averages[card_price.rarity]
             card_avg.entries += 1
             card_avg.total += card_price.p
-            card_avg.avg_price = round(card_avg.total / card_avg.entries, 2)
+            card_avg.avg_price = card_avg.total / card_avg.entries
 
         total_entries = 0
         for _, v in averages.items():

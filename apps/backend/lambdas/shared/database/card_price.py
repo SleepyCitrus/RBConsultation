@@ -1,6 +1,5 @@
-from decimal import Decimal
-
 from pydantic import BaseModel, ConfigDict, Field
+from shared.database.context_metadata import CurrencyDecimal
 
 
 class CardPrice(BaseModel):
@@ -9,6 +8,6 @@ class CardPrice(BaseModel):
     name: str
     set: str
     rarity: str
-    p: Decimal
+    p: CurrencyDecimal
     t: int
     tcgplayer_id: int = Field(alias="tcgplayerId")

@@ -1,12 +1,11 @@
-from decimal import Decimal
-
 from pydantic import BaseModel
+from shared.database.context_metadata import CurrencyDecimal
 
 
 class AggregatePrice(BaseModel):
     entries: int
-    avg_price: Decimal
-    total: Decimal
+    avg_price: CurrencyDecimal
+    total: CurrencyDecimal
 
 
 class AggregateSet(BaseModel):

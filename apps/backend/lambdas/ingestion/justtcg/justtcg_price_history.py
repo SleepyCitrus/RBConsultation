@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from ingestion.justtcg.justtcg_shared import CurrencyDecimal, EpochDatetime
 from pydantic import BaseModel
+from shared.database.context_metadata import CurrencyDecimal, EpochDatetime
 
 
 @dataclass

@@ -26,7 +26,7 @@ def lambda_handler(event, context):
         items = aggService.get_aggregation_by_set(set_name)
         print(items)
 
-        return response(200, items)
+        return response(200, items.model_dump(mode="json") if items else {})
 
     except ClientError as e:
         print(f"DynamoDB error: {e}")
