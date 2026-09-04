@@ -3,7 +3,6 @@ from typing import Optional
 
 import boto3
 from boto3.dynamodb.conditions import Key
-from ingestion.justtcg.justtcg_card import JustTCGCard
 from pydantic import TypeAdapter
 from shared.database.card_price import CardPrice
 from shared.logging.logger import logger
@@ -27,25 +26,6 @@ class DDBService:
 
     def __init__(self):
         self.ddb = dynamodb
-
-    def write_cards_metadata(self, cards: list[JustTCGCard]):
-        table = self.ddb.Table(CARD_METADATA_TABLE)
-        for card in cards:
-            item = card.model_dump(
-                include={
-                    "uuid",
-                    "id",
-                    "name",
-                    "game",
-                    "set",
-                    "set_name",
-                    "number",
-                    "rarity",
-                    "tcgplayerId",
-                    "details",
-                }
-            )
-            table.put_item(Item=item)
 
     def query_prices(self, set_name: str, rarity: Optional[str]) -> list[CardPrice]:
         """
