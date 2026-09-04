@@ -20,12 +20,7 @@ RIFTBOUND_SET_LABELS = [
     UNLEASHED_LABEL,
     VENDETTA_LABEL,
 ]
-RIFTBOUND_SET_CAPITALIZED_LABELS = [
-    ORIGINS_LABEL.capitalize(),
-    SPIRITFORGED_LABEL.capitalize(),
-    UNLEASHED_LABEL.capitalize(),
-    VENDETTA_LABEL.capitalize(),
-]
+RIFTBOUND_SET_CAPITALIZED_LABELS = [s.capitalize() for s in RIFTBOUND_SET_LABELS]
 
 # Set IDs
 ORIGINS_ID = "ogn"
@@ -44,17 +39,18 @@ SPECIAL_RARE = "sp"
 OVERNUMBERED = "overnumbered"
 SIGNATURE = "signature"
 ULTIMATE = "ultimate"
-RIFTBOUND_RARITY_CAPITALIZED_LABELS = [
-    COMMON.capitalize(),
-    UNCOMMON.capitalize(),
-    RARE.capitalize(),
-    EPIC.capitalize(),
-    SHOWCASE.capitalize(),
-    SPECIAL_RARE.capitalize(),
-    OVERNUMBERED.capitalize(),
-    SIGNATURE.capitalize(),
-    ULTIMATE.capitalize(),
+RIFTBOUND_RARITY_LABELS = [
+    COMMON,
+    UNCOMMON,
+    RARE,
+    EPIC,
+    SHOWCASE,
+    SPECIAL_RARE,
+    OVERNUMBERED,
+    SIGNATURE,
+    ULTIMATE,
 ]
+RIFTBOUND_RARITY_CAPITALIZED_LABELS = [r.capitalize() for r in RIFTBOUND_RARITY_LABELS]
 
 SHOWCASE_RARITY_TIERS = [SHOWCASE, SPECIAL_RARE, OVERNUMBERED, SIGNATURE, ULTIMATE]
 

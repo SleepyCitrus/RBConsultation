@@ -2,12 +2,11 @@ name: Deploy to AWS Lambda
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 permissions:
-  id-token: write   # This is required for OIDC authentication
-  contents: read    # This is required to checkout the repository
-
+  id-token: write # This is required for OIDC authentication
+  contents: read # This is required to checkout the repository
 
 jobs:
   deploy:
@@ -19,6 +18,7 @@ jobs:
       matrix:
         service:
           - ingestion
+          - query
 
     # Sets the default directory for all 'run' steps in this job
     defaults:
@@ -26,62 +26,62 @@ jobs:
         working-directory: apps/backend
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v5
+      - name: Checkout
+        uses: actions/checkout@v5
 
-    - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v4
-      with:
-        role-to-assume: arn:aws:iam::258491186884:role/github-actions-deploy-role
-        aws-region: us-west-1
-        # The role-to-assume should be the ARN of the IAM role you created for GitHub Actions OIDC
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::258491186884:role/github-actions-deploy-role
+          aws-region: us-west-1
+          # The role-to-assume should be the ARN of the IAM role you created for GitHub Actions OIDC
 
-    - name: Create Python zip
-      run: |
-        sudo rm -rf lambdas/artifact/${{ matrix.service }}
-        sudo mkdir -p lambdas/artifact/${{ matrix.service }}
+      - name: Create Python zip
+        run: |
+          sudo rm -rf lambdas/artifact/${{ matrix.service }}
+          sudo mkdir -p lambdas/artifact/${{ matrix.service }}
 
-        sudo cp -R lambdas/${{ matrix.service }} \
-          lambdas/artifact/${{ matrix.service }}/
+          sudo cp -R lambdas/${{ matrix.service }} \
+            lambdas/artifact/${{ matrix.service }}/
 
-        sudo cp -R lambdas/shared \
-          lambdas/artifact/${{ matrix.service }}/
+          sudo cp -R lambdas/shared \
+            lambdas/artifact/${{ matrix.service }}/
 
-        sudo docker run --rm \
-          --platform linux/amd64 \
-          --entrypoint /bin/bash \
-          -v "$PWD:/src:ro" \
-          -v "$PWD/lambdas/artifact/${{ matrix.service }}:/var/task" \
-          -w /src \
-          public.ecr.aws/lambda/python:3.14 \
-          -c '
-            pip install --no-cache-dir \
-              poetry==2.4.1 \
-              poetry-plugin-export==1.10.0
+          sudo docker run --rm \
+            --platform linux/amd64 \
+            --entrypoint /bin/bash \
+            -v "$PWD:/src:ro" \
+            -v "$PWD/lambdas/artifact/${{ matrix.service }}:/var/task" \
+            -w /src \
+            public.ecr.aws/lambda/python:3.14 \
+            -c '
+              pip install --no-cache-dir \
+                poetry==2.4.1 \
+                poetry-plugin-export==1.10.0
 
-            poetry export --format requirements.txt --without-hashes |
-              pip install --no-cache-dir -r /dev/stdin -t /var/task
+              poetry export --format requirements.txt --without-hashes |
+                pip install --no-cache-dir -r /dev/stdin -t /var/task
 
-            echo "=== Installed ==="
-            pwd
-            ls -la /var/task
-          '
+              echo "=== Installed ==="
+              pwd
+              ls -la /var/task
+            '
 
-        sudo find lambdas/artifact/${{ matrix.service }} -name "__pycache__" -type d -exec rm -rf {} +
-        sudo find lambdas/artifact/${{ matrix.service }} -name ".DS_Store" -type f -exec rm -f {} +
+          sudo find lambdas/artifact/${{ matrix.service }} -name "__pycache__" -type d -exec rm -rf {} +
+          sudo find lambdas/artifact/${{ matrix.service }} -name ".DS_Store" -type f -exec rm -f {} +
 
-    - name: Verify Lambda artifact
-      run: |
-        echo "=== Artifact ==="
-        sudo test -d lambdas/artifact/${{ matrix.service }}
-        sudo ls -la lambdas/artifact/${{ matrix.service }}
+      - name: Verify Lambda artifact
+        run: |
+          echo "=== Artifact ==="
+          sudo test -d lambdas/artifact/${{ matrix.service }}
+          sudo ls -la lambdas/artifact/${{ matrix.service }}
 
-    - name: Deploy Lambda Function
-      uses: aws-actions/aws-lambda-deploy@v1.1.0
-      with:
-        function-name: just-tcg-pricing
-        code-artifacts-dir: apps/backend/lambdas/artifact/${{ matrix.service }}/
-        handler: ${{ matrix.service }}.lambda_function.lambda_handler
-        runtime: python3.14
-        environment: '{"JUSTTCG_API_KEY": "${{ secrets.JUSTTCG_API_KEY }}"}'
-        timeout: 300
+      - name: Deploy Lambda Function
+        uses: aws-actions/aws-lambda-deploy@v1.1.0
+        with:
+          function-name: rbconsultation-${{ matrix.service }}
+          code-artifacts-dir: apps/backend/lambdas/artifact/${{ matrix.service }}/
+          handler: ${{ matrix.service }}.lambda_function.lambda_handler
+          runtime: python3.14
+          environment: '{"JUSTTCG_API_KEY": "${{ secrets.JUSTTCG_API_KEY }}"}'
+          timeout: 300

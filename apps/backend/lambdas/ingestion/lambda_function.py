@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 
 from ingestion.card_filter import CardFilter
 from ingestion.justtcg.justtcg_card import JustTCGCard
+from shared.database.card_price import CardPrice
 from shared.database.ddb_service import DDBService
 from shared.riftcodex.riftcodex_item import RiftcodexItem
 from shared.riftcodex.riftcodex_service import RiftcodexService
@@ -59,7 +60,7 @@ def lambda_handler(event, context):
 def write_cards_price(
     priced_cards: list[JustTCGCard], card_details: dict[str, RiftcodexItem]
 ):
-    rows_to_write = []
+    rows_to_write: list[CardPrice] = []
     for card in priced_cards:
         if card.variants:
             # We only want the pricing for the first variant which should be the lower rarity
@@ -67,6 +68,7 @@ def write_cards_price(
 
             last_timestamp = datetime.min.replace(tzinfo=timezone.utc)
             item = {}
+            card_price = None
 
             for price_history in variant.priceHistory:
                 if price_history.t > last_timestamp:
@@ -82,7 +84,9 @@ def write_cards_price(
                         item["rarity"] = card.rarity.capitalize()
                     item["set"] = card.set_name
 
-            if item:
-                rows_to_write.append(item)
+                    card_price = CardPrice(**item)
+
+            if card_price:
+                rows_to_write.append(card_price)
 
     ddbService.batch_write_prices(rows_to_write=rows_to_write)

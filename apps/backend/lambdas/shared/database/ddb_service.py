@@ -1,11 +1,16 @@
 import logging
-from typing import Any
+from typing import Optional
 
 import boto3
 from boto3.dynamodb.conditions import Key
 from ingestion.justtcg.justtcg_card import JustTCGCard
+from pydantic import TypeAdapter
+from shared.database.card_price import CardPrice
 from shared.logging.logger import logger
-from shared.riftbound.riftbound_metadata import RIFTBOUND_SET_CAPITALIZED_LABELS
+from shared.riftbound.riftbound_metadata import (
+    RIFTBOUND_RARITY_CAPITALIZED_LABELS,
+    RIFTBOUND_SET_CAPITALIZED_LABELS,
+)
 
 dynamodb = boto3.resource("dynamodb", region_name="us-west-1")
 
@@ -42,23 +47,27 @@ class DDBService:
             )
             table.put_item(Item=item)
 
-    def query_prices(self, set: str):
+    def query_prices(self, set_name: str, rarity: Optional[str]) -> list[CardPrice]:
         """
-        Get prices by set from the prices table GSI.
+        Get prices by set_name from the prices table GSI.
         """
         self.logger.info(f"Querying prices from DynamoDB")
 
         table = self.ddb.Table(CARD_PRICE_TABLE)
 
-        if set in RIFTBOUND_SET_CAPITALIZED_LABELS:
+        if set_name in RIFTBOUND_SET_CAPITALIZED_LABELS:
 
             items = []
             last_evaluated_key = None
 
+            key = Key("set").eq(set_name)
+            if rarity and rarity in RIFTBOUND_RARITY_CAPITALIZED_LABELS:
+                key = key & Key("rarity").eq(rarity)
+
             while True:
                 query_params = {
                     "IndexName": PRICE_BY_RARITY_GSI,
-                    "KeyConditionExpression": Key("set").eq(set),
+                    "KeyConditionExpression": key,
                 }
 
                 if last_evaluated_key:
@@ -67,7 +76,10 @@ class DDBService:
                 response = table.query(**query_params)
 
                 # 4. Extract and print the returned items
-                items.extend(response.get("Items", []))
+                table_rows = response.get("Items", [])
+                adapter = TypeAdapter(list[CardPrice])
+
+                items.extend(adapter.validate_python(table_rows))
 
                 last_evaluated_key = response.get("LastEvaluatedKey", None)
                 if not last_evaluated_key:
@@ -76,7 +88,9 @@ class DDBService:
             print(f"Retrieved {len(items)} items from GSI.")
             return items
 
-    def batch_write_prices(self, rows_to_write: list[dict[str, Any]]):
+        return []
+
+    def batch_write_prices(self, rows_to_write: list[CardPrice]):
         self.logger.info(f"Writing {len(rows_to_write)} rows to DynamoDB")
 
         table = self.ddb.Table(CARD_PRICE_TABLE)
@@ -84,6 +98,6 @@ class DDBService:
         try:
             with table.batch_writer() as batch:
                 for row in rows_to_write:
-                    batch.put_item(Item=row)
+                    batch.put_item(Item=row.model_dump())
         except Exception as e:
             self.logger.error(f"Error writing to DynamoDB: {e}")
